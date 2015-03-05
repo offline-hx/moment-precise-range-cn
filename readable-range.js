@@ -1,19 +1,14 @@
 (function(moment) {
+    //删除了无用的复数，去掉了空格
     var STRINGS = {
         nodiff: '',
-        year: 'year',
-        years: 'years',
-        month: 'month',
-        months: 'months',
-        day: 'day',
-        days: 'days',
-        hour: 'hour',
-        hours: 'hours',
-        minute: 'minute',
-        minutes: 'minutes',
-        second: 'second',
-        seconds: 'seconds',
-        delimiter: ' '
+        year: '年',
+        month: '个月',
+        day: '天',
+        hour: '小时',
+        minute: '分钟',
+        second: '秒',
+        delimiter: ''
     };
     moment.fn.preciseDiff = function(d2) {
         return moment.preciseDiff(this, d2);
@@ -49,6 +44,7 @@
             dDiff--;
         }
         if (dDiff < 0) {
+            //TODO:moment2.8.3 moment().subtract(period, number) is deprecated. Please use moment().subtract(number, period)
             var daysInLastFullMonth = moment(m2.year() + '-' + (m2.month() + 1), "YYYY-MM").subtract('months', 1).daysInMonth();
             if (daysInLastFullMonth < m1.date()) { // 31/01 -> 2/03
                 dDiff = daysInLastFullMonth + dDiff + (m1.date() - daysInLastFullMonth);
@@ -63,7 +59,9 @@
         }
 
         function pluralize(num, word) {
-            return num + ' ' + STRINGS[word + (num === 1 ? '' : 's')];
+            //return num + ' ' + STRINGS[word + (num === 1 ? '' : 's')];
+            //本地化修改，去掉复数和数字与单位之间的空格
+            return num + STRINGS[word];
         }
         var result = [];
 
